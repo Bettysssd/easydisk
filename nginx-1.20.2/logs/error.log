@@ -210,3 +210,4 @@
 2024/07/18 14:43:30 [emerg] 65392#66620: host not found in upstream "localhost" in E:\project\yundisk\version2\EasyPan-main\nginx-1.20.2/conf/nginx.conf:35
 2024/07/18 14:43:31 [emerg] 67152#65788: host not found in upstream "localhost" in E:\project\yundisk\version2\EasyPan-main\nginx-1.20.2/conf/nginx.conf:35
 2024/07/18 14:43:32 [emerg] 65984#66444: host not found in upstream "localhost" in E:\project\yundisk\version2\EasyPan-main\nginx-1.20.2/conf/nginx.conf:35
+2024/07/18 14:46:12 [error] 62140#66896: *2 connect() failed (10061: No connection could be made because the target machine actively refused it) while connecting to upstream, client: 127.0.0.1, server: lucas_yun_disk.com, request: "GET /api/checkCode?type=0&time=1721285170702 HTTP/1.1", upstream: "http://127.0.0.1:7090/api/checkCode?type=0&time=1721285170702", host: "localhost", referrer: "http://localhost/login"
