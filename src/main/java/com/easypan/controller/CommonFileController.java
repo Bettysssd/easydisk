@@ -24,6 +24,9 @@ import java.io.File;
 import java.net.URLEncoder;
 import java.util.List;
 
+/**
+ * 文件操作
+ */
 public class CommonFileController extends ABaseController {
 
     @Resource
