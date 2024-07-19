@@ -1,10 +1,18 @@
 package com.easypan.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class SysSettingsDto implements Serializable {
     /**
      * 注册发送邮件标题
@@ -21,27 +29,5 @@ public class SysSettingsDto implements Serializable {
      */
     private Integer userInitUseSpace = 5;
 
-    public String getRegisterEmailTitle() {
-        return registerEmailTitle;
-    }
 
-    public void setRegisterEmailTitle(String registerEmailTitle) {
-        this.registerEmailTitle = registerEmailTitle;
-    }
-
-    public String getRegisterEmailContent() {
-        return registerEmailContent;
-    }
-
-    public void setRegisterEmailContent(String registerEmailContent) {
-        this.registerEmailContent = registerEmailContent;
-    }
-
-    public Integer getUserInitUseSpace() {
-        return userInitUseSpace;
-    }
-
-    public void setUserInitUseSpace(Integer userInitUseSpace) {
-        this.userInitUseSpace = userInitUseSpace;
-    }
 }

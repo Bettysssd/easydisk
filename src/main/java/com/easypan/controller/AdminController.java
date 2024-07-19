@@ -45,11 +45,15 @@ public class AdminController extends CommonFileController {
             @VerifyParam(required = true) String registerEmailTitle,
             @VerifyParam(required = true) String registerEmailContent,
             @VerifyParam(required = true) Integer userInitUseSpace) {
-        SysSettingsDto sysSettingsDto = new SysSettingsDto();
-        sysSettingsDto.setRegisterEmailTitle(registerEmailTitle);
-        sysSettingsDto.setRegisterEmailContent(registerEmailContent);
-        sysSettingsDto.setUserInitUseSpace(userInitUseSpace);
-        redisComponent.saveSysSettingsDto(sysSettingsDto);
+
+
+        redisComponent.saveSysSettingsDto(SysSettingsDto
+                                       .builder()
+                                        .registerEmailTitle(registerEmailTitle)
+                                        .registerEmailContent(registerEmailContent)
+                                        .userInitUseSpace(userInitUseSpace)
+                                        .build());
+
         return getSuccessResponseVO(null);
     }
 
@@ -82,6 +86,7 @@ public class AdminController extends CommonFileController {
      * @param query
      * @return
      */
+    @SuppressWarnings("checkstyle:WhitespaceAfter")
     @RequestMapping("/loadFileList")
     @GlobalInterceptor(checkParams = true,checkAdmin = true)
     public ResponseVO loadDataList(FileInfoQuery query) {
@@ -91,6 +96,7 @@ public class AdminController extends CommonFileController {
         return getSuccessResponseVO(resultVO);
     }
 
+    @SuppressWarnings("checkstyle:WhitespaceAfter")
     @RequestMapping("/getFolderInfo")
     @GlobalInterceptor(checkLogin = false,checkAdmin = true, checkParams = true)
     public ResponseVO getFolderInfo(@VerifyParam(required = true) String path) {
@@ -100,6 +106,7 @@ public class AdminController extends CommonFileController {
 
     @RequestMapping("/getFile/{userId}/{fileId}")
     @GlobalInterceptor(checkParams = true, checkAdmin = true)
+    @Override
     public void getFile(HttpServletResponse response,
                         @PathVariable("userId") @VerifyParam(required = true) String userId,
                         @PathVariable("fileId") @VerifyParam(required = true) String fileId) {
@@ -117,6 +124,7 @@ public class AdminController extends CommonFileController {
 
     @RequestMapping("/createDownloadUrl/{userId}/{fileId}")
     @GlobalInterceptor(checkParams = true, checkAdmin = true)
+    @Override
     public ResponseVO createDownloadUrl(@PathVariable("userId") @VerifyParam(required = true) String userId,
                                         @PathVariable("fileId") @VerifyParam(required = true) String fileId) {
         return super.createDownloadUrl(fileId, userId);
@@ -131,6 +139,7 @@ public class AdminController extends CommonFileController {
      */
     @RequestMapping("/download/{code}")
     @GlobalInterceptor(checkLogin = false, checkParams = true)
+    @Override
     public void download(HttpServletRequest request, HttpServletResponse response,
                          @PathVariable("code") @VerifyParam(required = true) String code) throws Exception {
         super.download(request, response, code);

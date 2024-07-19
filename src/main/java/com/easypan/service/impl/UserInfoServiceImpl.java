@@ -243,9 +243,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         sessionWebUserDto.setUserId(userInfo.getUserId());
         // 判断邮箱是否为超级管理员
         if (ArrayUtils.contains(appConfig.getAdminEmails().split(","), email)) {
-            sessionWebUserDto.setAdmin(true);
+            sessionWebUserDto.setIsAdmin(true);
         } else {
-            sessionWebUserDto.setAdmin(false);
+            sessionWebUserDto.setIsAdmin(false);
         }
         //用户空间
         UserSpaceDto userSpaceDto = new UserSpaceDto();
@@ -393,9 +393,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         sessionWebUserDto.setNickName(user.getNickName());
         sessionWebUserDto.setAvatar(avatar);
         if (ArrayUtils.contains(appConfig.getAdminEmails().split(","), user.getEmail() == null ? "" : user.getEmail())) {
-            sessionWebUserDto.setAdmin(true);
+            sessionWebUserDto.setIsAdmin(true);
         } else {
-            sessionWebUserDto.setAdmin(false);
+            sessionWebUserDto.setIsAdmin(false);
         }
 
         UserSpaceDto userSpaceDto = new UserSpaceDto();

@@ -13,6 +13,7 @@
         <result column="create_time" property="createTime"/>
         <!--0:未使用  1:已使用-->
         <result column="status" property="status"/>
+        <!--创建时间-->
     </resultMap>
 
 

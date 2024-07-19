@@ -1,6 +1,8 @@
 package com.easypan.entity.config;
 
 import com.easypan.utils.StringTools;
+import lombok.Data;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Component;
 /**
  * 读取配置文件,对应到配置文件 【application.properties】
  */
+@Data
+@Getter
 public class AppConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
@@ -31,9 +35,7 @@ public class AppConfig {
     @Value("${admin.emails:}")
     private String adminEmails;
 
-    public String getAdminEmails() {
-        return adminEmails;
-    }
+
 
     @Value("${dev:false}")
     private Boolean dev;
@@ -71,43 +73,4 @@ public class AppConfig {
         return projectFolder;
     }
 
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public String getSendUserName() {
-        return sendUserName;
-    }
-
-    public Boolean getDev() {
-        return dev;
-    }
-
-    public String getQqAppId() {
-        return qqAppId;
-    }
-
-    public String getQqAppKey() {
-        return qqAppKey;
-    }
-
-    public String getQqUrlAuthorization() {
-        return qqUrlAuthorization;
-    }
-
-    public String getQqUrlAccessToken() {
-        return qqUrlAccessToken;
-    }
-
-    public String getQqUrlOpenId() {
-        return qqUrlOpenId;
-    }
-
-    public String getQqUrlUserInfo() {
-        return qqUrlUserInfo;
-    }
-
-    public String getQqUrlRedirect() {
-        return qqUrlRedirect;
-    }
 }

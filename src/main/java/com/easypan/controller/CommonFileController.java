@@ -81,6 +81,7 @@ public class CommonFileController extends ABaseController {
      * @param fileId
      * @param userId
      */
+    @SuppressWarnings("checkstyle:ReturnCount")
     protected void getFile(HttpServletResponse response, String fileId, String userId) {
         String filePath = null;
         // 读取index.ts文件，如果有的话

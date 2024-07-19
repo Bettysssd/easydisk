@@ -36,6 +36,7 @@ import java.util.Map;
 
 @RestController("accountController")
 public class AccountController extends ABaseController {
+    @SuppressWarnings("checkstyle:ConstantName")
     private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     private static final String CONTENT_TYPE = "Content-Type";
@@ -62,6 +63,7 @@ public class AccountController extends ABaseController {
      * @param type
      * @throws IOException
      */
+    @SuppressWarnings("checkstyle:MagicNumber")
     @RequestMapping(value = "/checkCode")
     public void checkCode(HttpServletResponse response, HttpSession session, Integer type) throws
             IOException {
@@ -324,10 +326,13 @@ public class AccountController extends ABaseController {
             logger.error("上传头像失败", e);
         }
 
-        UserInfo userInfo = new UserInfo();
-        userInfo.setQqAvatar("");
+
         // 修改用户信息
-        userInfoService.updateUserInfoByUserId(userInfo, webUserDto.getUserId());
+        userInfoService.updateUserInfoByUserId(UserInfo
+                .builder()
+                .qqAvatar("")
+                .build(), webUserDto.getUserId());
+
         webUserDto.setAvatar(null);
         // 根据session_key来修改当前用户的
         session.setAttribute(Constants.SESSION_KEY, webUserDto);
@@ -346,12 +351,12 @@ public class AccountController extends ABaseController {
                                      @VerifyParam(required = true, regex = VerifyRegexEnum.PASSWORD, min = 8, max = 18) String password) {
         // 获取当前用户的基本信息
         SessionWebUserDto sessionWebUserDto = getUserInfoFromSession(session);
-        // 准备好需要更新的对象
-        UserInfo userInfo = new UserInfo();
-        // 接受密码，并进行md5的加密
-        userInfo.setPassword(StringTools.encodeByMD5(password));
         // 更新
-        userInfoService.updateUserInfoByUserId(userInfo, sessionWebUserDto.getUserId());
+        userInfoService.updateUserInfoByUserId(UserInfo
+                .builder()
+                .password(StringTools.encodeByMD5(password))   // 接受密码，并进行md5的加密
+                .build(), sessionWebUserDto.getUserId());
+
         return getSuccessResponseVO(null);
     }
 

@@ -30,24 +30,28 @@ public class ABaseController {
     //失败状态
     protected static final String STATUC_ERROR = "error";
 
-    // VO 前后端交互中华不需要向用户展示的那部分数据
+    // VO 前后端交互中不需要向用户展示的那部分数据
     protected <T> ResponseVO getSuccessResponseVO(T t) {
         ResponseVO<T> responseVO = new ResponseVO<>();
+
         responseVO.setStatus(STATUC_SUCCESS);
         responseVO.setCode(ResponseCodeEnum.CODE_200.getCode());
         responseVO.setInfo(ResponseCodeEnum.CODE_200.getMsg());
         responseVO.setData(t);
+
         return responseVO;
     }
 
     // 分页Vo
     protected <S, T> PaginationResultVO<T> convert2PaginationVO(PaginationResultVO<S> result, Class<T> classz) {
         PaginationResultVO<T> resultVO = new PaginationResultVO<>();
+
         resultVO.setList(CopyTools.copyList(result.getList(), classz));
         resultVO.setPageNo(result.getPageNo());
         resultVO.setPageSize(result.getPageSize());
         resultVO.setPageTotal(result.getPageTotal());
         resultVO.setTotalCount(result.getTotalCount());
+
         return resultVO;
     }
 
@@ -66,6 +70,7 @@ public class ABaseController {
 
 
     // 阅读文件
+    @SuppressWarnings({"checkstyle:ReturnCount", "checkstyle:MagicNumber"})
     protected void readFile(HttpServletResponse response, String filePath) {
         if (!StringTools.pathIsOk(filePath)) {
             return;

@@ -111,7 +111,7 @@ public class GlobalOperationAspect {
                 sessionUser = new SessionWebUserDto();
                 sessionUser.setUserId(userInfo.getUserId());
                 sessionUser.setNickName(userInfo.getNickName());
-                sessionUser.setAdmin(true);
+                sessionUser.setIsAdmin(true);
                 session.setAttribute(Constants.SESSION_KEY, sessionUser);
             }
         }
@@ -119,7 +119,7 @@ public class GlobalOperationAspect {
             throw new BusinessException(ResponseCodeEnum.CODE_901);
         }
 
-        if (checkAdmin && !sessionUser.getAdmin()) {
+        if (checkAdmin && !sessionUser.getIsAdmin()) {
             throw new BusinessException(ResponseCodeEnum.CODE_404);
         }
     }
