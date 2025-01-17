@@ -214,6 +214,7 @@ public class WebShareController extends CommonFileController {
      * @param response
      * @throws Exception
      */
+    @Override
     @RequestMapping("/download/{code}")
     @GlobalInterceptor(checkLogin = false, checkParams = true)
     public void download(HttpServletRequest request, HttpServletResponse response,

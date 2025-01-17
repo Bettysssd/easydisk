@@ -56,7 +56,7 @@ public class GlobalOperationAspect {
 
     // 先行者【这里才是真校验】,JoinPoint就像寄生虫一样，获取方法下面的的相关内容
     @Before("requestInterceptor()")
-    public void interceptorDo(JoinPoint point) throws BusinessException {
+    public void interceptorDo(JoinPoint point)  {
         try {
             //获取当前注解下的对应的controller方法 例如：sendEmailCode()
             Object target = point.getTarget();

@@ -39,11 +39,15 @@ public class ShareController extends ABaseController {
                                 @VerifyParam(required = true) Integer validType,
                                 String code) {
         SessionWebUserDto userDto = getUserInfoFromSession(session);
-        FileShare share = new FileShare();
-        share.setFileId(fileId);
-        share.setValidType(validType);
-        share.setCode(code);
-        share.setUserId(userDto.getUserId());
+
+        FileShare share  = FileShare
+                .builder()
+                .fileId(fileId)
+               .validType(validType)
+                .code(code)
+                .userId(userDto.getUserId())
+                .build();
+
         fileShareService.saveShare(share);
         return getSuccessResponseVO(share);
     }

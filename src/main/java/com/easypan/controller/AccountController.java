@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -55,6 +54,9 @@ public class AccountController extends ABaseController {
     @Resource
     private RedisComponent redisComponent;
 
+
+
+
     /**
      * 生成验证码，type：0登陆， 1注册
      *
@@ -65,8 +67,8 @@ public class AccountController extends ABaseController {
      */
     @SuppressWarnings("checkstyle:MagicNumber")
     @RequestMapping(value = "/checkCode")
-    public void checkCode(HttpServletResponse response, HttpSession session, Integer type) throws
-            IOException {
+    public void checkCode(HttpServletResponse response, HttpSession session, Integer type) throws IOException {
+
 
         // 生成图片形式的验证码，不是给用户发的注册的邮箱验证码
         CreateImageCode vCode = new CreateImageCode(130, 38, 5, 10);
@@ -156,7 +158,7 @@ public class AccountController extends ABaseController {
      */
     @RequestMapping("/login")
     @GlobalInterceptor(checkLogin = false, checkParams = true)
-    public ResponseVO login(HttpSession session, HttpServletRequest request,
+    public ResponseVO login(HttpSession session,
                             @VerifyParam(required = true) String email,
                             @VerifyParam(required = true) String password,
                             @VerifyParam(required = true) String checkCode) {
@@ -252,7 +254,6 @@ public class AccountController extends ABaseController {
         try {
             writer = response.getWriter();
             writer.print("请在头像目录下放置默认头像default_avatar.jpg");
-            writer.close();
         } catch (Exception e) {
             logger.error("输出无默认图失败", e);
         } finally {
@@ -333,6 +334,7 @@ public class AccountController extends ABaseController {
                 .qqAvatar("")
                 .build(), webUserDto.getUserId());
 
+
         webUserDto.setAvatar(null);
         // 根据session_key来修改当前用户的
         session.setAttribute(Constants.SESSION_KEY, webUserDto);
@@ -360,7 +362,7 @@ public class AccountController extends ABaseController {
         return getSuccessResponseVO(null);
     }
 
-    /**
+    /** 不写
      * qq登录
      * @param session
      * @param callbackUrl
@@ -383,7 +385,7 @@ public class AccountController extends ABaseController {
         return getSuccessResponseVO(url);
     }
 
-    /**
+    /** 不写
      * 提供给前端的接口
      * @param session
      * @param code

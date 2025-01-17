@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -93,6 +92,7 @@ public class FileInfoController extends CommonFileController {
      * @param imageFolder
      * @param imageName
      */
+    @Override
     @RequestMapping("/getImage/{imageFolder}/{imageName}")
     public void getImage(HttpServletResponse response, @PathVariable("imageFolder") String imageFolder, @PathVariable("imageName") String imageName) {
         super.getImage(response, imageFolder, imageName);
@@ -184,14 +184,17 @@ public class FileInfoController extends CommonFileController {
     @RequestMapping("/loadAllFolder")
     @GlobalInterceptor(checkParams = true)
     public ResponseVO loadAllFolder(HttpSession session, @VerifyParam(required = true) String filePid, String currentFileIds) {
-        FileInfoQuery query = new FileInfoQuery();
-        query.setUserId(getUserInfoFromSession(session).getUserId());
-        query.setFilePid(filePid);
-        query.setFolderType(FileFolderTypeEnums.FOLDER.getType());
+        // 获取用户的基本信息
+        FileInfoQuery query = FileInfoQuery
+                .builder()
+                .userId(getUserInfoFromSession(session).getUserId())
+                .filePid(filePid)
+                .folderType(FileFolderTypeEnums.FOLDER.getType())
+                .delFlag(FileDelFlagEnums.USING.getFlag())
+                .build();
         if (!StringTools.isEmpty(currentFileIds)) {
             query.setExcludeFileIdArray(currentFileIds.split(","));
         }
-        query.setDelFlag(FileDelFlagEnums.USING.getFlag());
         query.setOrderBy("create_time desc");
         List<FileInfo> fileInfoList = fileInfoService.findListByParam(query);
         return getSuccessResponseVO(CopyTools.copyList(fileInfoList, FileInfoVO.class));
@@ -234,6 +237,7 @@ public class FileInfoController extends CommonFileController {
      * @param code
      * @throws Exception
      */
+    @Override
     @RequestMapping("/download/{code}")
     @GlobalInterceptor(checkLogin = false, checkParams = true)
     public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable("code") @VerifyParam(required = true) String code) throws Exception {

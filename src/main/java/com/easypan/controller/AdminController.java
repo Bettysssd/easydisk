@@ -32,6 +32,10 @@ public class AdminController extends CommonFileController {
     @Resource
     private FileInfoService fileInfoService;
 
+
+
+
+
     @RequestMapping("/getSysSettings")
     @GlobalInterceptor(checkParams = true, checkAdmin = true)
     public ResponseVO getSysSettings() {
@@ -48,7 +52,7 @@ public class AdminController extends CommonFileController {
 
 
         redisComponent.saveSysSettingsDto(SysSettingsDto
-                                       .builder()
+                                        .builder()
                                         .registerEmailTitle(registerEmailTitle)
                                         .registerEmailContent(registerEmailContent)
                                         .userInitUseSpace(userInitUseSpace)

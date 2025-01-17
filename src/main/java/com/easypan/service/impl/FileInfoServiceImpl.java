@@ -203,7 +203,6 @@ public class FileInfoServiceImpl implements FileInfoService {
                     dbFile.setFileId(fileId);
                     dbFile.setFilePid(filePid);
                     dbFile.setUserId(webUserDto.getUserId());
-                    dbFile.setFileMd5(null);
                     dbFile.setCreateTime(curDate);
                     dbFile.setLastUpdateTime(curDate);
                     dbFile.setStatus(FileStatusEnums.USING.getStatus());
@@ -353,7 +352,7 @@ public class FileInfoServiceImpl implements FileInfoService {
             //真实文件名
             String realFileName = currentUserFolderName + fileSuffix;
             //真实文件路径
-            targetFilePath = targetFolder.getPath() + "/" + realFileName;
+            targetFilePath = targetFolder.getPath() + "\\" + realFileName;
             //合并文件
             union(fileFolder.getPath(), targetFilePath, fileInfo.getFileName(), true);
             //视频文件切割
@@ -448,12 +447,12 @@ public class FileInfoServiceImpl implements FileInfoService {
         final String CMD_TRANSFER_2TS = "ffmpeg -y -i %s  -vcodec copy -acodec copy -preset h264_mp4toannexb %s";
         final String CMD_CUT_TS = "ffmpeg -i %s -c copy -map 0 -f segment -segment_list %s -segment_time 30 %s/%s_%%4d.ts";
 
-        String tsPath = tsFolder + "/" + Constants.TS_NAME;
+        String tsPath = tsFolder.getPath() + "\\" + Constants.TS_NAME;
         //生成.ts
         String cmd = String.format(CMD_TRANSFER_2TS, videoFilePath, tsPath);
         ProcessUtils.executeCommand(cmd, false);
         //生成索引文件.m3u8 和切片.ts
-        cmd = String.format(CMD_CUT_TS, tsPath, tsFolder.getPath() + "/" + Constants.M3U8_NAME, tsFolder.getPath(), fileId);
+        cmd = String.format(CMD_CUT_TS, tsPath, tsFolder.getPath() + "\\" + Constants.M3U8_NAME, tsFolder.getPath(), fileId);
         ProcessUtils.executeCommand(cmd, false);
         //删除index.ts
         new File(tsPath).delete();

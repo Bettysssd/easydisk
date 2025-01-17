@@ -1,5 +1,7 @@
 package com.easypan.entity.constants;
 
+import org.junit.Test;
+
 public class Constants {
     public static final String ZERO_STR = "0";
 

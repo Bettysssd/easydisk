@@ -113,7 +113,7 @@ public class RedisComponent {
         if (sizeObj == null) {
             return 0L;
         }
-        if (sizeObj instanceof Integer) {
+         if (sizeObj instanceof Integer) {
             return ((Integer) sizeObj).longValue();
         } else if (sizeObj instanceof Long) {
             return (Long) sizeObj;

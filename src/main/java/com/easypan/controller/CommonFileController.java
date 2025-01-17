@@ -46,13 +46,17 @@ public class CommonFileController extends ABaseController {
      */
     public ResponseVO getFolderInfo(String path, String userId) {
         String[] pathArray = path.split("/");
-        FileInfoQuery infoQuery = new FileInfoQuery();
-        infoQuery.setUserId(userId);
-        infoQuery.setFolderType(FileFolderTypeEnums.FOLDER.getType());
-        infoQuery.setFileIdArray(pathArray);
+        FileInfoQuery infoQuery = FileInfoQuery
+                .builder().userId(userId)
+                .folderType(FileFolderTypeEnums.FOLDER.getType())
+                .fileIdArray(pathArray)
+                .build();
         String orderBy = "field(file_id,\"" + StringUtils.join(pathArray, "\",\"") + "\")";
+
+        //TODO 父类属性，单独获取，反射使用暂时不太方便
         infoQuery.setOrderBy(orderBy);
         List<FileInfo> fileInfoList = fileInfoService.findListByParam(infoQuery);
+
         return getSuccessResponseVO(CopyTools.copyList(fileInfoList, FolderVO.class));
     }
 
@@ -92,19 +96,22 @@ public class CommonFileController extends ABaseController {
             FileInfo fileInfo = fileInfoService.getFileInfoByFileIdAndUserId(realFileId, userId);
             if (fileInfo == null) {
                 //分享的视频，ts路径记录的是原视频的id,这里通过id直接取出原视频
-                FileInfoQuery fileInfoQuery = new FileInfoQuery();
-                fileInfoQuery.setFileId(realFileId);
-                List<FileInfo> fileInfoList = fileInfoService.findListByParam(fileInfoQuery);
+
+                List<FileInfo> fileInfoList = fileInfoService.findListByParam(FileInfoQuery
+                        .builder()
+                        .fileId(realFileId)
+                        .build());
                 fileInfo = fileInfoList.get(0);
                 if (fileInfo == null) {
                     return;
                 }
 
                 //更具当前用户id和路径去查询当前用户是否有该文件，如果没有直接返回
-                fileInfoQuery = new FileInfoQuery();
-                fileInfoQuery.setFilePath(fileInfo.getFilePath());
-                fileInfoQuery.setUserId(userId);
-                Integer count = fileInfoService.findCountByParam(fileInfoQuery);
+                Integer count = fileInfoService.findCountByParam(FileInfoQuery
+                        .builder()
+                        .fileId(fileInfo.getFileId())
+                        .userId(userId)
+                        .build());
                 if (count == 0) {
                     return;
                 }
@@ -151,13 +158,13 @@ public class CommonFileController extends ABaseController {
             throw new BusinessException(ResponseCodeEnum.CODE_600);
         }
         String code = StringTools.getRandomString(Constants.LENGTH_50);
-        DownloadFileDto downloadFileDto = new DownloadFileDto();
-        downloadFileDto.setDownloadCode(code);
-        downloadFileDto.setFilePath(fileInfo.getFilePath());
-        downloadFileDto.setFileName(fileInfo.getFileName());
 
-        redisComponent.saveDownloadCode(code, downloadFileDto);
-
+        redisComponent.saveDownloadCode(code, DownloadFileDto
+                  .builder()
+                  .downloadCode(code)
+                  .filePath(fileInfo.getFilePath())
+                  .fileName(fileInfo.getFileName())
+                  .build());
         return getSuccessResponseVO(code);
     }
 
@@ -168,6 +175,7 @@ public class CommonFileController extends ABaseController {
      * @param code
      * @throws Exception
      */
+    @SuppressWarnings("checkstyle:WhitespaceAround")
     protected void download(HttpServletRequest request, HttpServletResponse response, String code) throws Exception {
         DownloadFileDto downloadFileDto = redisComponent.getDownloadCode(code);
         if (null == downloadFileDto) {
@@ -176,7 +184,7 @@ public class CommonFileController extends ABaseController {
         String filePath = appConfig.getProjectFolder() + Constants.FILE_FOLDER_FILE + downloadFileDto.getFilePath();
         String fileName = downloadFileDto.getFileName();
         response.setContentType("application/x-msdownload; charset=UTF-8");
-        if (request.getHeader("User-Agent").toLowerCase().indexOf("msie") > 0) {//IE浏览器
+        if (request.getHeader("User-Agent").toLowerCase().indexOf("msie") > 0) { //IE浏览器
             fileName = URLEncoder.encode(fileName, "UTF-8");
         } else {
             fileName = new String(fileName.getBytes("UTF-8"), "ISO8859-1");

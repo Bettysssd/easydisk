@@ -22,6 +22,7 @@ import java.io.OutputStream;
 public class ABaseController {
 
     // 获取当前的日志
+    @SuppressWarnings("checkstyle:ConstantName")
     private static final Logger logger = LoggerFactory.getLogger(ABaseController.class);
 
     // 成功状态
@@ -30,29 +31,26 @@ public class ABaseController {
     //失败状态
     protected static final String STATUC_ERROR = "error";
 
-    // VO 前后端交互中不需要向用户展示的那部分数据
+    // VO
     protected <T> ResponseVO getSuccessResponseVO(T t) {
-        ResponseVO<T> responseVO = new ResponseVO<>();
 
-        responseVO.setStatus(STATUC_SUCCESS);
-        responseVO.setCode(ResponseCodeEnum.CODE_200.getCode());
-        responseVO.setInfo(ResponseCodeEnum.CODE_200.getMsg());
-        responseVO.setData(t);
-
-        return responseVO;
+        return  ResponseVO.<T>builder()
+                .status(STATUC_SUCCESS)
+                .code(ResponseCodeEnum.CODE_200.getCode())
+                .info(ResponseCodeEnum.CODE_200.getMsg())
+                .data(t)
+               .build();
     }
 
     // 分页Vo
     protected <S, T> PaginationResultVO<T> convert2PaginationVO(PaginationResultVO<S> result, Class<T> classz) {
-        PaginationResultVO<T> resultVO = new PaginationResultVO<>();
-
-        resultVO.setList(CopyTools.copyList(result.getList(), classz));
-        resultVO.setPageNo(result.getPageNo());
-        resultVO.setPageSize(result.getPageSize());
-        resultVO.setPageTotal(result.getPageTotal());
-        resultVO.setTotalCount(result.getTotalCount());
-
-        return resultVO;
+        return PaginationResultVO.<T>builder()
+                .list(CopyTools.copyList(result.getList(), classz))
+                .pageNo(result.getPageNo())
+                .pageSize(result.getPageSize())
+                .pageTotal(result.getPageTotal())
+                .totalCount(result.getTotalCount())
+                .build();
     }
 
     // 获取封装用户信息的实体
@@ -107,6 +105,7 @@ public class ABaseController {
                 } catch (IOException e) {
                     logger.error("IO异常", e);
                 }
+
             }
         }
     }

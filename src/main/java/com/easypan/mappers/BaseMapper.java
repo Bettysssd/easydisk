@@ -33,7 +33,7 @@ package com.easypan.mappers;
 	/**
 	 * selectList:(根据参数查询集合). <br/>
 	 */
-	 List<T> selectList(@Param("query") P p);
+	 List<T>selectList(@Param("query") P p);
 
 	/**
 	 * selectCount:(根据集合查询数量). <br/>
